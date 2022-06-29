@@ -17,6 +17,16 @@ import { CSVLink } from "react-csv";
 //Router
 import { useNavigate } from 'react-router-dom';
 
+//MaterialUI
+//Material UI
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+  
+//CSV Headers
 const headers = [
     { label: "Name", key: "name" },
     { label: "Email", key: "email" },
@@ -43,6 +53,7 @@ const Dashboard = () => {
     const itemsPerPage = 5;
     const [sortOrder, setSortOrder] = useState('');
     const [sortBy, setSortBy] = useState('');
+    const [open, setOpen] = useState(false);
 
 
     useEffect(() => {
@@ -76,13 +87,22 @@ const Dashboard = () => {
     const onHandleSubmit = (event) => {
         event.preventDefault();
         dispatch(createPatient(patient));
+        setOpen(true);
         setPatient({
             name: '',
             email: '',
             age: 0,
             gender: '',
         })
-    }
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
 
     //CSV
     const csvReport = {
@@ -90,6 +110,7 @@ const Dashboard = () => {
         headers: headers,
         filename: 'Patients.csv'
     };
+    
 
 
     let finalData = useMemo(() => {
@@ -241,6 +262,11 @@ const Dashboard = () => {
             </div>
 
         </div>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+            <Alert onClose={handleClose} severity="success">
+                Added
+            </Alert>
+        </Snackbar>
         </>
     )
 }
