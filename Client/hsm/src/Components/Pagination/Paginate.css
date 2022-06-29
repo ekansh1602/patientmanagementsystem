@@ -1,0 +1,12 @@
+.page-item {
+	margin-right: 5px;
+}
+
+
+/*Media Queries*/
+
+@media screen and (max-width: 480px){
+	nav{
+		width: 90vw;
+	}
+}
